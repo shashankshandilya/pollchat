@@ -5,8 +5,7 @@
 //
 // Basically a less crappy functional test than the can-fake-with-netcat one that
 // comes with kafka
-//
-// David Basden <davidb@anchor.net.au>
+// main.shashank@gmail.com
 //
 
 "use strict";
