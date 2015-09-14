@@ -1,27 +1,62 @@
-  
+var socket = null;
+var users  = {}
 $(function(){
-  var socket = null;
+  
+  var username = null;
 
   function createSocket(){
     socket = io();
     //receive chat
     socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
+      msg = JSON.parse( msg );
+      sender = users[ msg['sender'] ];
+      text   = msg['msg'];
+      $('#messages').append($('<li>').text( sender +' says ' + text ) );
     });
+
+    //user connected
+    socket.on('user', function(msg){
+      msg = JSON.parse(msg);
+      users = msg;
+    });
+
+    //user disconnected
+    socket.on('disconnect', function(msg){
+      msg = JSON.parse(msg);
+      users = msg;
+    });
+
+    data = { username : username }
+    socket.emit('user', data );
   }
 
   // submit username
   $('#submit_username').on('click', function(){
-    console.log( $('#userid').val() );
-    $('.username').addClass('hide');
+    username = $.trim( $('#userid').val() );
+    $('.wrapper').addClass('hide');
     $('.chatWindow').removeClass('hide');
+    createSocket();
   });
 
   // submit chat
   $('#submit_chat').on('click', function(){
-    socket.emit('chat message', $('#m').val());
-    $('#m').val('');
+    userId = null;
+    recId  = null;
+    msg  = $.trim( $('#inputmessage').val() );
+    $.each(users, function(k,v){
+      if( v != username ){
+        recId  = k
+      }else{
+        userId = k
+      }
+    });
+    data = { sender : userId, msg: msg, receiver : recId }
+    console.log("send chat data");
+    console.log(data);
+    socket.emit('chat message', JSON.stringify( data ) );
+    $('#inputmessage').val('');
     return false;
   });
+
 });
 
