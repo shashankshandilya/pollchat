@@ -85,3 +85,6 @@ div.hide{ display: none;}
   min-height: 85%;
   left: 0px;
 }
+li.selected{
+  background-color: lightgray;
+}
