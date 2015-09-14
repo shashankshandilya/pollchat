@@ -17,7 +17,6 @@ var path = require( 'path' )
 var root = path.dirname( path.dirname( __filename ) )
 
 var users = {};
-var clients = {};
 
 app.use(express.static( root + '/views') );
 
@@ -26,7 +25,6 @@ io.on('connection', function(socket){
   console.log(' :: user connected :: id :: '+socket.id);
 
   socket.on('disconnect', function(){
-    delete clients[ socket.id ];
     delete users[ socket.id ];
     io.emit('disconnect', JSON.stringify( users ) );
   });
@@ -42,7 +40,6 @@ io.on('connection', function(socket){
   socket.on('user', function(msg){
     username = msg[ 'username'];
     users[ socket.id ] = username;
-    clients[ socket.id ] = socket;
     io.emit('user', JSON.stringify( users ) );
   });
 
