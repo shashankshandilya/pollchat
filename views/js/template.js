@@ -23,7 +23,7 @@ $(function(){
       text   = msg['msg'];
       $('#messages').append($('<li>').text( sender +' says ' + text ) );
     });
-
+    $('.userDetails').html("<h1> Welcome <u>"+ username +"</u></h1>")
     //user connected
     socket.on('user', function(msg){
       msg = JSON.parse(msg);
