@@ -63,11 +63,11 @@ $(function(){
     msg  = $.trim( $('#inputmessage').val() );
 
     if ( undefined != $('li.selected').attr('data-id') ){
-      recId = $('li.selected').attr('data-id');
+      recId = $('li.selected').text();
     }else{
       $.each(users, function(k,v){
         if( v != username ){
-          recId  = k
+          recId  = v
         }
       });
     }
@@ -77,13 +77,12 @@ $(function(){
         return;
       }
     });
-    data = { sender : userId, msg: msg, receiver : recId }
+    data = { sender : username, msg: msg, receiver : recId }
     console.log("send chat data");
     console.log(data);
     socket.emit('chat message', JSON.stringify( data ) );
     $('#inputmessage').val('');
     return false;
   });
-
 });
 
