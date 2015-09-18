@@ -18,8 +18,9 @@ $(function(){
     socket = io();
     //receive chat
     socket.on('chat message', function(msg){
+      console.log("msg is" + msg);
       msg = JSON.parse( msg );
-      sender = users[ msg['sender'] ];
+      sender = msg['sender'];
       text   = msg['msg'];
       $('#messages').append($('<li>').text( sender +' says ' + text ) );
     });
@@ -39,6 +40,7 @@ $(function(){
     });
 
     data = { username : username }
+    console.log("emit user event");
     socket.emit('user', data );
   }
 
